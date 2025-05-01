@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  api-service:
+    image: datascientest/fastapi:1.0.0
+    environment:
+      - API_ADDRESS=api-service
+      - API_PORT=8000
+      - LOG=1
+    networks:
+      - api_network
+    volumes:
+      - ./logs:/app/logs
+    ports:
+      - "8000:8000"
+
+  java-test:
+    build:
+      context: ./test1
+      dockerfile: Dockerfile
+    environment:
+      - API_ADDRESS=api-service
+      - API_PORT=8000
+      - LOG=1
+    networks:
+      - api_network
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - api-service
+
+  python-auth-test:
+    build:
+      context: ./test2
+      dockerfile: Dockerfile
+    environment:
+      - API_ADDRESS=api-service
+      - API_PORT=8000
+      - API_PATH=${API_PATH}
+      - LOG=1
+    networks:
+      - api_network
+    volumes:
+      - ./logs:/app/logs
+    command: ["${USERNAME}", "${PASSWORD}"]
+    depends_on:
+      - api-service
+
+  python-content-test:
+    build:
+      context: ./test3
+      dockerfile: Dockerfile
+    environment:
+      - API_ADDRESS=api-service
+      - API_PORT=8000
+      - API_PATH=${API_PATH}
+      - LOG=1
+    networks:
+      - api_network
+    volumes:
+      - ./logs:/app/logs
+    command: ["${USERNAME}", "${PASSWORD}", "${SENTENCE}"]
+    depends_on:
+      - api-service
+
+networks:
+  api_network:
+    driver: bridge
