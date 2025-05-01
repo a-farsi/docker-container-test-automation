@@ -14,7 +14,7 @@ Pour pouvoir joindre le conteneur ‘fast_api’, nous devons le mettre dans le 
 ```bash
 docker network create --name api_network
 ```
-Lancer le conteneur datascientest/fastapi:1.0.0 en l’attachant au réseau ‘api_network’ 
+Lancer le conteneur _datascientest/fastapi:1.0.0_ en l’attachant au réseau ‘api_network’ 
 
 ```bash
 docker container run -p 8000:8000 --name fast_api --network api_network datascientest/fastapi:1.0.0
@@ -67,7 +67,7 @@ Pour pouvoir accéder aux fichiers de logs même après avoir arrêté le conten
 
 
 Le code source du Dockerfile : 
-```bash
+```dockerfile
 # Utilise l'image officielle de Java 
 FROM eclipse-temurin:17-jdk-alpine
 
